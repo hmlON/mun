@@ -1,0 +1,77 @@
+body {
+  padding: 0;
+  margin: 0;
+}
+
+section {
+  padding: 0;
+  margin: 0;
+}
+
+h1 {
+  font-size: 3.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+p {
+  font-size: 1.2rem;
+}
+
+li {
+  font-size: 1.2rem;
+}
+
+.header {
+  width: 100vw;
+  display: flex;
+  justify-content: flex-end;
+  top: 0;
+  left: 0;
+  position: absolute;
+}
+
+.header-link {
+  padding: 1rem;
+  font-size: 1.2rem;
+  color: #222;
+  text-decoration: none;
+}
+
+.brand {
+  margin: 0;
+  color: #c55e00;
+}
+
+.brand-text {
+  color: #c55e00;
+}
+
+.landing-section {
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.landing-main::after {
+  background: white url("images/landos.jpeg") no-repeat center center fixed;
+  background-size: cover;
+  filter: blur(3px);
+  opacity: 0.5;
+  content: "";
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
+}
+
+.landing-main {
+  color: #222;
+}
