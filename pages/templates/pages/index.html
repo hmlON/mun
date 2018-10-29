@@ -4,8 +4,12 @@
 <link rel="stylesheet" type="text/css" href="{% static 'pages/style.css' %}">
 
 <header class="header">
-  <a href="/login" class="header-link">Login</a>
-  <a href="/signup" class="header-link">Sign up</a>
+  {% if user.is_authenticated %}
+    <a href="/logout" class="header-link">Log out</a>
+  {% else %}
+    <a href="/login" class="header-link">Login</a>
+    <a href="/signup" class="header-link">Sign up</a>
+  {% endif %}
 </header>
 <section class="landing-section landing-main">
   <h1 class="brand">MuN</h1>
