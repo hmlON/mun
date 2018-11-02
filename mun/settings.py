@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'social_django',
     'pages',
     'users',
 ]
@@ -101,7 +102,19 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGIN_REDIRECT_URL = "/"
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GooglePlusAuth',
+    'django.contrib.auth.backends.ModelBackend',
+)
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+SOCIAL_AUTH_GOOGLE_PLUS_KEY = '3665185406-oh9u297s9g0o8gjgsmm9kioguec6sapt.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_PLUS_SECRET = 'w7DuteMpdfA9DfHD5M5DKt3n'
+# SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '3665185406-oh9u297s9g0o8gjgsmm9kioguec6sapt.apps.googleusercontent.com'
+# SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'w7DuteMpdfA9DfHD5M5DKt3n'
 
 
 # Internationalization
