@@ -109,7 +109,7 @@ LOGOUT_REDIRECT_URL = '/'
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GooglePlusAuth',
     'social_core.backends.spotify.SpotifyOAuth2',
-    'social_core.backends.spotify.SpotifyOAuth2',
+    'social_core.backends.deezer.DeezerOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 )
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
@@ -119,6 +119,9 @@ SOCIAL_AUTH_GOOGLE_PLUS_SECRET = 'w7DuteMpdfA9DfHD5M5DKt3n'
 
 SOCIAL_AUTH_SPOTIFY_KEY = 'f6ef8567a15541768cb3f718401353dd'
 SOCIAL_AUTH_SPOTIFY_SECRET = '582573fdb98d4c5289660865c0e0adde'
+
+SOCIAL_AUTH_DEEZER_KEY = '309204'
+SOCIAL_AUTH_DEEZER_SECRET = 'e12493ca6cf9ac0ef56d211767c8c9ab'
 
 
 # Internationalization
