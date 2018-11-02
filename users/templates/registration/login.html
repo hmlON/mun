@@ -3,5 +3,6 @@
   {% csrf_token %}
   {{ form.as_p }}
   <button type="submit">Login</button>
-  <a href="{% url "social:begin" "google-plus" %}">Google+</a>
+  <p><a href="{% url "social:begin" "google-plus" %}">Google+</a></p>
+  <p><a href="{% url "social:begin" "spotify" %}">Spotify</a></p>
 </form>

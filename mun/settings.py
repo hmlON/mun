@@ -108,13 +108,17 @@ LOGOUT_REDIRECT_URL = '/'
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GooglePlusAuth',
+    'social_core.backends.spotify.SpotifyOAuth2',
+    'social_core.backends.spotify.SpotifyOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 )
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
+
 SOCIAL_AUTH_GOOGLE_PLUS_KEY = '3665185406-oh9u297s9g0o8gjgsmm9kioguec6sapt.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_PLUS_SECRET = 'w7DuteMpdfA9DfHD5M5DKt3n'
-# SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '3665185406-oh9u297s9g0o8gjgsmm9kioguec6sapt.apps.googleusercontent.com'
-# SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'w7DuteMpdfA9DfHD5M5DKt3n'
+
+SOCIAL_AUTH_SPOTIFY_KEY = 'f6ef8567a15541768cb3f718401353dd'
+SOCIAL_AUTH_SPOTIFY_SECRET = '582573fdb98d4c5289660865c0e0adde'
 
 
 # Internationalization
