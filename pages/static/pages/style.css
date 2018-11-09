@@ -34,10 +34,16 @@ li {
 }
 
 .header-link {
-  padding: 1rem;
+  margin: 1rem;
+  border-bottom: 3px solid #c55e00;
   font-size: 1.2rem;
   color: #222;
   text-decoration: none;
+}
+
+.header-text {
+  margin: 1rem;
+  font-size: 1.2rem;
 }
 
 .brand {
@@ -74,4 +80,19 @@ li {
 
 .landing-main {
   color: #222;
+}
+
+.landing-main-text {
+  padding: 1rem;
+}
+
+.langing-features {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.landing-feature {
+  margin: 2rem;
+  min-width: 300px;
 }
