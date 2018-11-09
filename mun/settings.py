@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'social_django',
     'pages',
     'users',
+    'integrations'
 ]
 
 MIDDLEWARE = [
@@ -110,13 +111,13 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',
     'social_core.pipeline.social_auth.social_uid',
     'social_core.pipeline.social_auth.auth_allowed',
-    # 'myapp.pipeline.load_user',
     'social_core.pipeline.social_auth.social_user',
     'social_core.pipeline.social_auth.associate_by_email',
     'social_core.pipeline.user.create_user',
     'social_core.pipeline.social_auth.associate_user',
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
+    'integrations.pipeline.save_integration',
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -132,7 +133,7 @@ SOCIAL_AUTH_URL_NAMESPACE = 'social'
 
 SOCIAL_AUTH_SPOTIFY_KEY = 'f6ef8567a15541768cb3f718401353dd'
 SOCIAL_AUTH_SPOTIFY_SECRET = '582573fdb98d4c5289660865c0e0adde'
-SOCIAL_AUTH_SPOTIFY_SCOPE = ['user-read-email', 'user-library-read']
+SOCIAL_AUTH_SPOTIFY_SCOPE = ['user-read-email', 'user-follow-read']
 
 SOCIAL_AUTH_DEEZER_KEY = '309204'
 SOCIAL_AUTH_DEEZER_SECRET = 'e12493ca6cf9ac0ef56d211767c8c9ab'
