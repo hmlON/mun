@@ -2,27 +2,30 @@
 <title>MuN: Music Notifications</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" type="text/css" href="{% static 'pages/style.css' %}">
+<link rel="shortcut icon" href="{% static 'favicon.ico' %}"/>
 
 <header class="header">
   {% if user.is_authenticated %}
     <a href="/logout" class="header-link">Log out</a>
   {% else %}
     <div class="header-text">Sign in via:</div>
-    <a href="{% url "social:begin" "spotify" %}"" class="header-link">Spotify</a>
+    <a href="{% url "social:begin" "spotify" %}" class="header-link">Spotify</a>
     <a href="{% url "social:begin" "deezer" %}" class="header-link">Deezer</a>
   {% endif %}
 </header>
 <section class="landing-section landing-main">
-  <h1 class="brand">MuN</h1>
-  <h2>
-    <span class="brand-text">Mu</span>sic
-    <span class="brand-text">N</span>otifications
-  </h2>
-  <p class="landing-main-text">
-    Got tired of missing out on releases from your favourite artists?
-    <br>
-    You have found a perfect solution...
-  </p>
+  <div class="landing-section-content">
+    <h1 class="brand">MuN</h1>
+    <h2>
+      <span class="brand-text">Mu</span>sic
+      <span class="brand-text">N</span>otifications
+    </h2>
+    <p class="landing-main-text">
+      Got tired of missing out on releases from your favourite artists?
+      <br>
+      You have found a perfect solution...
+    </p>
+  </div>
 </section>
 <section class="landing-section langing-features">
   <section class="landing-feature feature-music-services">
