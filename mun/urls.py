@@ -18,6 +18,7 @@ from django.urls import include, path
 
 urlpatterns = [
     path('', include('pages.urls')),
+    path('', include('integrations.urls')),
     path('', include('django.contrib.auth.urls')),
     path('social/', include('social_django.urls')),
     path('admin/', admin.site.urls),

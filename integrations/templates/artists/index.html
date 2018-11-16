@@ -1,0 +1,8 @@
+<h1>Artists</h1>
+<h2>from {{ user }}</h2>
+
+{% for artist in artists %}
+    <article>
+        {{ artist.name }}
+    </article>
+{% endfor %}
