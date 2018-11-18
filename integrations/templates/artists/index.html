@@ -1,8 +1,9 @@
 <h1>Artists</h1>
 <h2>from {{ user }}</h2>
 
-{% for artist in artists %}
+{% for release in releases %}
     <article>
-        {{ artist.name }}
+        {{ release.date }}: {{ release.artist.name }} - {{ release.title }}
+        <img src="{{ release.cover_url }}" alt="{{ release.title }} cover">
     </article>
 {% endfor %}
