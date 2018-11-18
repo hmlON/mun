@@ -68,4 +68,4 @@ def index(request):
     # render
     releases = Release.objects.all().order_by('-date')
     context = {'user': request.user, 'releases': releases}
-    return render(request, 'artists/index.html', context)
+    return render(request, 'releases/index.html', context)

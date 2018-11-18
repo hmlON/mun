@@ -1,0 +1,17 @@
+{% load static %}
+<title>Latest releases | MuN</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="{% static 'releases/style.css' %}">
+<link rel="shortcut icon" href="{% static 'favicon.ico' %}"/>
+
+<h1 class="page-title">Latest releases</h1>
+
+<main class="releases">
+    {% for release in releases %}
+        <article class="release">
+            <span class="release-date">{{ release.date }}</span>
+            <img src="{{ release.cover_url }}" alt="{{ release.title }} cover" class="release-cover">
+            <span class="release-title">{{ release.artist.name }} - {{ release.title }}</span>
+        </article>
+    {% endfor %}
+</main>
