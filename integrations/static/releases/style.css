@@ -1,0 +1,38 @@
+body {
+  color: #ddd;
+  background: #222;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  padding: 0;
+  margin: 0;
+  padding-top: 1rem;
+}
+
+.page-title {
+  text-align: center;
+  font-size: 2rem;
+}
+
+.releases {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  max-width: 50rem;
+}
+
+.release {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.release-date {
+  min-width: 8rem;
+}
+
+.release-cover {
+  height: 50px;
+  width: 50px;
+  margin-right: 1rem;
+}
