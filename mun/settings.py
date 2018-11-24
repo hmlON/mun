@@ -79,8 +79,12 @@ WSGI_APPLICATION = 'mun.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get('DATABASE_NAME', ''),
+        'USER': os.environ.get('DATABASE_USER', ''),
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD', ''),
+        'HOST': os.environ.get('DATABASE_HOST', ''),
+        'PORT': os.environ.get('DATABASE_PORT', ''),
     }
 }
 
@@ -128,15 +132,15 @@ AUTHENTICATION_BACKENDS = (
 )
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 
-# SOCIAL_AUTH_GOOGLE_PLUS_KEY = '3665185406-oh9u297s9g0o8gjgsmm9kioguec6sapt.apps.googleusercontent.com'
-# SOCIAL_AUTH_GOOGLE_PLUS_SECRET = 'w7DuteMpdfA9DfHD5M5DKt3n'
+# SOCIAL_AUTH_GOOGLE_PLUS_KEY = os.environ.get('GOOGLE_PLUS_KEY', '')
+# SOCIAL_AUTH_GOOGLE_PLUS_SECRET = os.environ.get('GOOGLE_PLUS_SECRET', '')
 
-SOCIAL_AUTH_SPOTIFY_KEY = 'f6ef8567a15541768cb3f718401353dd'
-SOCIAL_AUTH_SPOTIFY_SECRET = '582573fdb98d4c5289660865c0e0adde'
+SOCIAL_AUTH_SPOTIFY_KEY = os.environ.get('SPOTIFY_KEY', '')
+SOCIAL_AUTH_SPOTIFY_SECRET = os.environ.get('SPOTIFY_SECRET', '')
 SOCIAL_AUTH_SPOTIFY_SCOPE = ['user-read-email', 'user-follow-read']
 
-SOCIAL_AUTH_DEEZER_KEY = '309204'
-SOCIAL_AUTH_DEEZER_SECRET = 'e12493ca6cf9ac0ef56d211767c8c9ab'
+SOCIAL_AUTH_DEEZER_KEY = os.environ.get('DEEZER_KEY', '')
+SOCIAL_AUTH_DEEZER_SECRET = os.environ.get('DEEZER_SECRET', '')
 SOCIAL_AUTH_DEEZER_SCOPE = ['basic_access', 'email']
 
 
