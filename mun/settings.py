@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'social_django',
     'pages',
     'users',
-    'integrations'
+    'integrations',
+    'notifications',
 ]
 
 MIDDLEWARE = [
@@ -122,6 +123,7 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
     'integrations.pipeline.save_integration',
+    'notifications.pipeline.create_default_notifications',
 )
 
 AUTHENTICATION_BACKENDS = (
