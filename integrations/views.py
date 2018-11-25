@@ -7,6 +7,7 @@ def index(request):
 
     DeezerFetcher.fetch(user_id)
 
-    releases = Release.objects.all().order_by('-date')
+    integration = request.user.integration_set.get(identifier='deezer')
+    releases = Release.objects.filter(artist__integration_id=integration.id).order_by('-date')
     context = {'user': request.user, 'releases': releases}
     return render(request, 'releases/index.html', context)
