@@ -73,7 +73,7 @@ li {
 }
 
 .landing-section-content {
-  padding: 2rem;
+  padding: 2rem 0;
   background: rgba(0,0,0,0.5);
   width: 100vw;
   display: flex;
