@@ -41,5 +41,9 @@ class Command(BaseCommand):
                   [user.email],
                   fail_silently=False,
               )
+
+              # update last sent at
+              notification.last_sent_at = datetime.datetime.now()
+              notification.save()
             else:
               self.stdout.write(self.style.SUCCESS(f'no new releases {user}'))
