@@ -6,3 +6,5 @@ class Notification(models.Model):
     channel = models.CharField(max_length=50)
     last_sent_at = models.DateTimeField(auto_now_add=True)
     enabled = models.BooleanField(default=True)
+    connect_token = models.CharField(max_length=64, null=True)
+    channel_id = models.CharField(max_length=64, null=True)
