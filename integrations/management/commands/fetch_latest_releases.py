@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.contrib.auth.models import User
 from integrations.music_service_fetchers.deezer_fetcher import DeezerFetcher
+from integrations.music_service_fetchers.spotify_fetcher import SpotifyFetcher
 from integrations.models import Release
 from django.core.mail import send_mail
 import datetime
@@ -15,10 +16,11 @@ class Command(BaseCommand):
 
         for user in users:
             self.stdout.write(self.style.SUCCESS(f'starting fetching for {user.email}'))
-            DeezerFetcher.fetch(user.id)
+            # DeezerFetcher.fetch(user.id)
+            SpotifyFetcher.fetch(user.id)
             self.stdout.write(self.style.SUCCESS(f'finished fetching for {user.email}'))
 
-            integration = user.integration_set.get(identifier='deezer')
+            integration = user.integration_set.get(identifier='spotify')
             notification = user.notification_set.get(channel='email')
 
             new_since = notification.last_sent_at

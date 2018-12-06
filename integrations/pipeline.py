@@ -12,6 +12,7 @@ def save_integration(backend, user, response, *args, **kwargs):
 
     if Integration.objects.filter(user=user, identifier=backend.name).exists():
         Integration.objects.filter(user=user, identifier=backend.name).update(
+            access_token=access_token,
             refresh_token=refresh_token,
             integration_user_id=integration_user_id,
         )
@@ -19,6 +20,7 @@ def save_integration(backend, user, response, *args, **kwargs):
         Integration.objects.create(
             user=user,
             identifier=backend.name,
+            access_token=access_token,
             refresh_token=refresh_token,
             integration_user_id=integration_user_id,
         )
