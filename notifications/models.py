@@ -8,3 +8,5 @@ class Notification(models.Model):
     enabled = models.BooleanField(default=True)
     connect_token = models.CharField(max_length=64, null=True)
     channel_id = models.CharField(max_length=64, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
