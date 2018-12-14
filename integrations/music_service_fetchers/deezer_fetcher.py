@@ -12,18 +12,17 @@ class DeezerFetcher():
         user_id = integration.integration_user_id
 
         # load all artists
-        # TODO: use next param instead of loop
         artists = []
         all_artists_loaded = False
-        index = 0
-        limit = 50
+        url = f"https://api.deezer.com/user/{user_id}/artists"
 
         while not all_artists_loaded:
-            url = f"https://api.deezer.com/user/{user_id}/artists?index={index}&limit={limit}"
-            current_request_artists = requests.get(url).json()['data']
-            artists += current_request_artists
-            index += limit
-            all_artists_loaded = len(current_request_artists) < limit
+            response = requests.get(url).json()
+            artists += response['data']
+            if response.get('next'):
+                url = response['next']
+            else:
+                all_artists_loaded = True
 
         # save or update loaded artists
         for artist in artists:
@@ -40,16 +39,16 @@ class DeezerFetcher():
             # load releases
             releases = []
             all_releases_loaded = False
-            index = 0
-            limit = 50
             artist_id = artist.integration_artist_id
+            url = f"https://api.deezer.com/artist/{artist_id}/albums"
 
             while not all_releases_loaded:
-                  url = f"https://api.deezer.com/artist/{artist_id}/albums?index={index}&limit={limit}"
-                  current_request_releases = requests.get(url).json()['data']
-                  releases += current_request_releases
-                  index += limit
-                  all_releases_loaded = len(current_request_artists) < limit
+                response = requests.get(url).json()
+                releases += response['data']
+                if response.get('next'):
+                    url = response['next']
+                else:
+                    all_releases_loaded = True
 
             # save or update releases
             for release in releases:
