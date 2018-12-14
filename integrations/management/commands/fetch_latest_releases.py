@@ -37,7 +37,8 @@ class Command(BaseCommand):
                 # new_since = datetime.date.today() - datetime.timedelta(days=30)
                 new_releases = Release.objects.filter(
                     artist__integration_id=integration.id,
-                    date__gte=new_since
+                    date__gte=new_since,
+                    created_at__gte=new_since,
                 ).order_by('-date')
 
 
@@ -70,7 +71,8 @@ class Command(BaseCommand):
                     # new_since = datetime.date.today() - datetime.timedelta(days=30)
                 new_releases = Release.objects.filter(
                     artist__integration_id=integration.id,
-                    date__gte=new_since
+                    date__gte=new_since,
+                    created_at__gte=new_since,
                 ).order_by('-date')
 
                 if new_releases.exists():
