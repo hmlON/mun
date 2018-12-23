@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.http import HttpResponse
 from secrets import token_urlsafe
@@ -7,6 +8,7 @@ from notifications.models import Notification
 import requests
 import os
 
+@login_required
 def create(request):
     notification, _created = request.user.notification_set.get_or_create(
       channel='telegram',
