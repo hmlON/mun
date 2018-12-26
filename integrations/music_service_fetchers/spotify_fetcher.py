@@ -78,9 +78,15 @@ class SpotifyFetcher():
                 elif release['release_date_precision'] == 'month':
                     release_date += '-01'
 
+                cover_url = release['images']
+                if len(cover_url) > 0:
+                    cover_url = max(release['images'], key=lambda image: image['width'])['url']
+                else:
+                    cover_url = ''
+
                 update = {
                     "title": release["name"],
-                    "cover_url": max(release['images'], key=lambda image: image['width'])['url'],
+                    "cover_url": cover_url,
                     "date": release_date,
                     "release_type": release["album_type"],
                 }
