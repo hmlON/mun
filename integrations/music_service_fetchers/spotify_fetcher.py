@@ -73,6 +73,8 @@ class SpotifyFetcher():
                 find_by = {"artist": artist, "integration_release_id": release["id"]}
 
                 release_date = release["release_date"]
+                if release_date == '0000':
+                    release_date = str(datetime.date.today().year)
                 if release['release_date_precision'] == 'year':
                     release_date += '-01-01'
                 elif release['release_date_precision'] == 'month':
