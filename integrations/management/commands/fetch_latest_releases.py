@@ -53,7 +53,7 @@ class Command(BaseCommand):
                     send_mail(
                         'New music releases',
                         email_text,
-                        'nik.kholin@gmail.com',
+                        'latest.releases@musicnotifier.com',
                         [user.email],
                         fail_silently=False,
                     )
