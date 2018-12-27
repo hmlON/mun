@@ -51,9 +51,9 @@ class Command(BaseCommand):
                     email_text = '\n'.join([intro_text] + releases_text)
 
                     send_mail(
-                        'New music releases',
+                        f'New music releases since {new_since}',
                         email_text,
-                        'latest.releases@musicnotifier.com',
+                        '"MuN: latest releases" <latest.releases@musicnotifier.com>',
                         [user.email],
                         fail_silently=False,
                     )
