@@ -31,10 +31,10 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS(f'finished fetching for {user.email}'))
 
 
-            if user.notification_set.filter(channel='email').exists():
+            if user.notification_set.filter(channel='email', enabled=True).exists():
                 notification = user.notification_set.get(channel='email')
                 new_since = notification.last_sent_at
-                # new_since = datetime.date.today() - datetime.timedelta(days=30)
+                # new_since = datetime.date.today() - datetime.timedelta(days=7)
                 new_releases = Release.objects.filter(
                     artist__integration_id=integration.id,
                     date__gte=new_since,
@@ -65,10 +65,10 @@ class Command(BaseCommand):
 
 
             # send a telegram message
-            if user.notification_set.filter(channel='telegram').exists():
+            if user.notification_set.filter(channel='telegram', enabled=True).exists():
                 notification = user.notification_set.get(channel='telegram')
                 new_since = notification.last_sent_at
-                    # new_since = datetime.date.today() - datetime.timedelta(days=30)
+                # new_since = datetime.date.today() - datetime.timedelta(days=7)
                 new_releases = Release.objects.filter(
                     artist__integration_id=integration.id,
                     date__gte=new_since,
