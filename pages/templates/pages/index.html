@@ -6,7 +6,7 @@
 
 <header class="header">
   {% if user.is_authenticated %}
-    <a href="{% url 'telegram' %}" target="_blank" class="header-link">Telegram</a>
+    <a href="/settings" class="header-link">Settings</a>
     <a href="/releases" class="header-link">Latest releases</a>
     <a href="{% url 'logout' %}" class="header-link">Log out</a>
   {% else %}

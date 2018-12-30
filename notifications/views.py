@@ -45,3 +45,12 @@ def callback(request):
         requests.post(send_message_url)
 
         return HttpResponse()
+
+@login_required
+def notification_update(request):
+    notification_id = request.POST.get('notification_id')
+    notification = Notification.objects.get(id=notification_id)
+    notification.enabled = bool(request.POST.get('enabled'))
+    notification.channel_id = request.POST.get('channel_id')
+    notification.save()
+    return redirect('/settings')

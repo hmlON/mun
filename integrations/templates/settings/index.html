@@ -1,0 +1,31 @@
+{% load static %}
+<title>Latest releases | MuN</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="{% static 'settings/style.css' %}">
+<link rel="shortcut icon" href="{% static 'favicon.ico' %}"/>
+
+<h1 class="page-title">Settings</h1>
+
+<main class="settings">
+  <section class="notification">
+    <h2>Email notifications</h2>
+    <form action="/notifications/update" method="POST">
+      {% csrf_token %}
+      {{ email_notification_form }}
+      <input type="submit" value="Save">
+    </form>
+
+    <hr>
+
+    <h2>Telegram notifications</h2>
+    {% if telegram_notification_form %}
+      <form action="/notifications/update" method="POST">
+        {% csrf_token %}
+        {{ telegram_notification_form }}
+        <input type="submit" value="Save">
+      </form>
+    {% else %}
+      <a href="{% url 'telegram' %}" target="_blank" class="telegram-connect-link">Connect Telegram</a>
+    {% endif %}
+  </section>
+</main>

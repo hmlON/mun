@@ -1,0 +1,29 @@
+body {
+  color: #ddd;
+  background: #222;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  padding: 0;
+  margin: 0;
+  padding-top: 1rem;
+}
+
+.page-title {
+  text-align: center;
+  font-size: 2rem;
+}
+
+.settings {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  max-width: 50rem;
+}
+
+.telegram-connect-link {
+  color: #ddd;
+  text-decoration: none;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid #ddd;
+}
