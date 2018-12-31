@@ -42,3 +42,12 @@ def settings(request):
         'telegram_notification_form': telegram_notification_form,
     }
     return render(request, 'settings/index.html', context)
+
+@login_required
+def artist(request, name):
+    integration = request.user.integration_set.get(identifier='spotify')
+    artist = integration.artist_set.get(name__iexact=name)
+    releases = artist.release_set.all().order_by('-date')
+
+    context = {'artist': artist, 'releases': releases}
+    return render(request, 'artists/show.html', context)

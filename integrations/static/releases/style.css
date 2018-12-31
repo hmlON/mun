@@ -36,3 +36,7 @@ body {
   width: 50px;
   margin-right: 1rem;
 }
+
+.release-artist-link {
+  color: #ddd;
+}
