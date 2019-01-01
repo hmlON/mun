@@ -21,6 +21,7 @@ urlpatterns = [
     path('', include('integrations.urls')),
     path('', include('notifications.urls')),
     path('', include('django.contrib.auth.urls')),
+    path('', include('users.urls')),
     path('social/', include('social_django.urls')),
     path('admin/', admin.site.urls),
 ]

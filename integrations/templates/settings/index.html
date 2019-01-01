@@ -28,4 +28,12 @@
       <a href="{% url 'telegram' %}" target="_blank" class="telegram-connect-link">Connect Telegram</a>
     {% endif %}
   </section>
+
+  <section class="user">
+    <h2>User</h2>
+    <form action="/user/delete" method="POST">
+      {% csrf_token %}
+      <input type="submit" value="Delete user">
+    </form>
+  </section>
 </main>
