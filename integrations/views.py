@@ -8,7 +8,7 @@ def index(request):
     user_id = request.user.id
 
     integration = request.user.integration_set.get(identifier='spotify')
-    releases = Release.objects.filter(artist__integration_id=integration.id).order_by('-date')
+    releases = Release.objects.filter(artist__integration_id=integration.id).order_by('-date')[:200]
     context = {'user': request.user, 'releases': releases}
     return render(request, 'releases/index.html', context)
 
