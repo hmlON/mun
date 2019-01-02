@@ -10,12 +10,19 @@ class Integration(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return f"{self.identifier} ({self.id})"
+
+
 class Artist(models.Model):
     integration = models.ForeignKey(Integration, on_delete=models.CASCADE)
     integration_artist_id = models.CharField(max_length=256, null=True)
     name = models.CharField(max_length=256)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.name} ({self.id})"
 
 class Release(models.Model):
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
@@ -26,3 +33,6 @@ class Release(models.Model):
     release_type = models.CharField(max_length=256)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.title} ({self.id})"

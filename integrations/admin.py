@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import Integration, Artist, Release
 
-# Register your models here.
+admin.site.register(Integration)
+admin.site.register(Artist)
+admin.site.register(Release)
