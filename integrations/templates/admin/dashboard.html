@@ -1,0 +1,27 @@
+{% load static %}
+<title>Dashboard | Django site admin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="{% static 'admin/style.css' %}">
+<link rel="shortcut icon" href="{% static 'favicon.ico' %}"/>
+
+<h1 class="page-title">Dashboard</h1>
+
+<main class="dashboard">
+  <section>
+    <h2>Users</h2>
+    <p>Total: {{ total_users_count }}</p>
+  </section>
+
+  <section>
+    <h2>Integrations</h2>
+    <p>Total: {{ total_integrations_count }}</p>
+    <p>{{ integrations_by_identifier_chart | safe }}</p>
+    </section>
+    </ul>
+
+  <section>
+    <h2>Notifications</h2>
+    <p>Total: {{ total_notifications_count }}</p>
+    <p>{{ notifications_by_identifier_chart | safe }}</p>
+  </section>
+</main>

@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from integrations.models import Release
 from notifications.forms import EmailNotificationForm, TelegramNotificationForm
 
@@ -51,3 +52,54 @@ def artist(request, name):
 
     context = {'artist': artist, 'releases': releases}
     return render(request, 'artists/show.html', context)
+
+@staff_member_required
+def admin_dashboard(request):
+    from django.contrib.auth.models import User
+    from integrations.models import Integration
+    from notifications.models import Notification
+    from django.db.models import Count
+    import matplotlib.pyplot as plt
+    import mpld3
+
+    total_users_count = User.objects.count()
+
+    total_integrations_count = Integration.objects.count()
+    integrations_by_identifier = Integration.objects.values('identifier').annotate(count=Count('identifier'))
+
+    x = [integration['count'] for integration in integrations_by_identifier]
+    labels = [integration['identifier'] for integration in integrations_by_identifier]
+    fig = plt.figure(figsize=(5, 5))
+    positions = range(len(x))
+    plt.bar(positions, x, color='lightblue')
+    plt.xticks(positions, labels)
+    integrations_by_identifier_chart = mpld3.fig_to_html(fig)
+
+    total_notifications_count = Notification.objects.count()
+    notifications_by_identifier = Notification.objects.values('channel').annotate(count=Count('channel'))
+
+    x = [notification['count'] for notification in notifications_by_identifier]
+    labels = [notification['channel'] for notification in notifications_by_identifier]
+    fig = plt.figure(figsize=(5, 5))
+    positions = range(len(x))
+    plt.bar(positions, x, color='lightblue')
+    plt.xticks(positions, labels)
+    notifications_by_identifier_chart = mpld3.fig_to_html(fig)
+
+    context = {
+        'total_users_count': total_users_count,
+        'total_integrations_count': total_integrations_count,
+        'integrations_by_identifier_chart': integrations_by_identifier_chart,
+        'total_notifications_count': total_notifications_count,
+        'notifications_by_identifier_chart': notifications_by_identifier_chart,
+        # 'fig': g,
+    }
+    return render(request, 'admin/dashboard.html', context)
+
+    # import matplotlib.pyplot as plt, mpld3
+    # from django.http import HttpResponse
+
+    # fig = plt.figure()
+    # plt.plot([1,2,3,4])
+    # g = mpld3.fig_to_html(fig)
+    # return HttpResponse(g)
