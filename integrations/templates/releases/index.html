@@ -7,13 +7,17 @@
 <h1 class="page-title">Latest releases</h1>
 
 <main class="releases">
-    {% for release in releases %}
-        <article class="release">
-            <span class="release-date">{{ release.date }}</span>
-            <img src="{{ release.cover_url }}" alt="{{ release.title }} cover" class="release-cover">
-            <span class="release-title">
-                <a href="/artists/{{ release.artist.name | lower }}" class="release-artist-link">{{ release.artist.name }}</a> - {{ release.title }}
-            </span>
-        </article>
-    {% endfor %}
+    {% if releases|length > 0 %}
+      {% for release in releases %}
+          <article class="release">
+              <span class="release-date">{{ release.date }}</span>
+              <img src="{{ release.cover_url }}" alt="{{ release.title }} cover" class="release-cover">
+              <span class="release-title">
+                  <a href="/artists/{{ release.artist.name | lower }}" class="release-artist-link">{{ release.artist.name }}</a> - {{ release.title }}
+              </span>
+          </article>
+      {% endfor %}
+    {% else %}
+      New releases will be here soon...
+    {% endif %}
 </main>
