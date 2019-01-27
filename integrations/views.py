@@ -8,7 +8,7 @@ from notifications.forms import EmailNotificationForm, TelegramNotificationForm
 def index(request):
     user_id = request.user.id
 
-    integration = request.user.integration_set.get(identifier='spotify')
+    integration = request.user.integration_set.last()
     releases = Release.objects.filter(artist__integration_id=integration.id).order_by('-date')[:200]
     context = {'user': request.user, 'releases': releases}
     return render(request, 'releases/index.html', context)
@@ -46,7 +46,7 @@ def settings(request):
 
 @login_required
 def artist(request, name):
-    integration = request.user.integration_set.get(identifier='spotify')
+    integration = request.user.integration_set.last()
     artist = integration.artist_set.get(name__iexact=name)
     releases = artist.release_set.all().order_by('-date')
 
