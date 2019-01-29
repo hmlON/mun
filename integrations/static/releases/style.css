@@ -37,6 +37,14 @@ body {
   margin-right: 1rem;
 }
 
+.release-title {
+  padding-right: 0.5rem;
+}
+
 .release-artist-link {
+  color: #ddd;
+}
+
+.integration-url {
   color: #ddd;
 }

@@ -29,6 +29,7 @@ class Release(models.Model):
     integration_release_id = models.CharField(max_length=256, null=True)
     title = models.CharField(max_length=256)
     cover_url = models.CharField(max_length=256)
+    integration_url = models.CharField(max_length=256, null=True)
     date = models.DateField()
     release_type = models.CharField(max_length=256)
     created_at = models.DateTimeField(auto_now_add=True)

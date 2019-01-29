@@ -91,6 +91,7 @@ class SpotifyFetcher():
                     "cover_url": cover_url,
                     "date": release_date,
                     "release_type": release["album_type"],
+                    "integration_url": release['external_urls']['spotify'],
                 }
                 if Release.objects.filter(**find_by).exists():
                     Release.objects.filter(**find_by).update(**update)

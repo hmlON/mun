@@ -58,6 +58,7 @@ class DeezerFetcher():
                     "cover_url": release["cover"],
                     "date": release["release_date"],
                     "release_type": release["type"],
+                    "integration_url": release["link"],
                 }
                 if Release.objects.filter(**find_by).exists():
                     Release.objects.filter(**find_by).update(**update)

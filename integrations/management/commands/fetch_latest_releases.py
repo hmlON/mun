@@ -47,14 +47,17 @@ class Command(BaseCommand):
                     self.stdout.write(self.style.SUCCESS(f'sending an email for {user.email} '))
 
                     releases_text = [f'{release.date}: {release.artist.name} - {release.title}' for release in new_releases]
+                    releases_html = [f'{release.date}: {release.artist.name} - <a href="{release.integration_url}">{release.title}</a>' for release in new_releases]
                     intro_text = 'Here are latest music releases that you have not seen before:'
-                    email_text = '\n'.join([intro_text] + releases_text)
+                    text_content = '\n'.join([intro_text] + releases_text)
+                    html_content = '<br>'.join([intro_text] + releases_html)
 
                     send_mail(
                         f'New music releases since {new_since}',
-                        email_text,
+                        text_content,
                         '"MuN: latest releases" <latest.releases@musicnotifier.com>',
                         [user.email],
+                        html_message=html_content,
                         fail_silently=False,
                     )
 
@@ -78,13 +81,16 @@ class Command(BaseCommand):
                 if new_releases.exists():
                     self.stdout.write(self.style.SUCCESS(f'sending a telegram message for {notification.channel_id} '))
 
-                    releases_text = [f'{release.date}: {release.artist.name} - {release.title}' for release in new_releases]
+                    releases_text = [
+                        f'{release.date}: {release.artist.name} - [{release.title}]({release.integration_url})'
+                        for release in new_releases
+                    ]
                     intro_text = 'Here are latest music releases that you have not seen before:'
                     text = '\n'.join([intro_text] + releases_text)
 
                     bot_key = os.environ.get('TELEGRAM_API_KEY')
                     chat_id = notification.channel_id
-                    send_message_url = f'https://api.telegram.org/bot{bot_key}/sendMessage?chat_id={chat_id}&text={text}'
+                    send_message_url = f'https://api.telegram.org/bot{bot_key}/sendMessage?chat_id={chat_id}&text={text}&parse_mode=markdown'
                     requests.post(send_message_url)
 
                     # update last sent at
