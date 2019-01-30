@@ -52,7 +52,7 @@ class Command(BaseCommand):
                     artist__integration_id=integration.id,
                     date__gte=new_since,
                     created_at__gte=new_since,
-                ).order_by('-date')
+                ).order_by('-date', '-created_at')
 
 
                 # send an email
@@ -89,7 +89,7 @@ class Command(BaseCommand):
                     artist__integration_id=integration.id,
                     date__gte=new_since,
                     created_at__gte=new_since,
-                ).order_by('-date')
+                ).order_by('-date', '-created_at')
 
                 if new_releases.exists():
                     self.stdout.write(self.style.SUCCESS(f'sending a telegram message for {notification.channel_id} '))
