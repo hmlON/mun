@@ -8,6 +8,19 @@ import datetime
 import os
 import requests
 
+import bugsnag
+import logging
+from bugsnag.handlers import BugsnagHandler
+bugsnag.configure(
+  api_key = os.environ.get('BUGSNAG_API_KEY'),
+  project_root = '../../',
+)
+logger = logging.getLogger('test.logger')
+handler = BugsnagHandler()
+handler.setLevel(logging.ERROR)
+logger.addHandler(handler)
+
+
 class Command(BaseCommand):
     help = 'Fetches latest releases'
 
