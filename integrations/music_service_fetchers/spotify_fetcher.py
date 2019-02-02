@@ -14,8 +14,8 @@ class SpotifyFetcher():
         integration = user.integration_set.get(identifier='spotify')
 
         # refresh token
-        client_id=os.environ.get('SPOTIFY_KEY', '')
-        client_secret=os.environ.get('SPOTIFY_SECRET', '')
+        client_id = os.environ.get('SPOTIFY_KEY', '')
+        client_secret = os.environ.get('SPOTIFY_SECRET', '')
         sp_oauth = SpotifyOAuth(client_id, client_secret, None)
         token_info = sp_oauth.refresh_access_token(integration.refresh_token)
 
