@@ -5,6 +5,7 @@ import datetime
 import os
 import requests
 import time
+from dateutil.parser import parse
 
 class SpotifyFetcher():
     def fetch(user_id):
@@ -72,13 +73,10 @@ class SpotifyFetcher():
             for release in releases:
                 find_by = {"artist": artist, "integration_release_id": release["id"]}
 
-                release_date = release["release_date"]
-                if release_date == '0000':
-                    release_date = str(datetime.date.today().year)
-                if release['release_date_precision'] == 'year':
-                    release_date += '-01-01'
-                elif release['release_date_precision'] == 'month':
-                    release_date += '-01'
+                try:
+                    release_date = parse(release['release_date'])
+                except ValueError:
+                    release_date = str(datetime.date.today())
 
                 cover_url = release['images']
                 if len(cover_url) > 0:
