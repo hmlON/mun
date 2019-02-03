@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from django.shortcuts import render
 from integrations.models import Artist, Release
 import requests
+import datetime
+from dateutil.parser import parse
 
 class DeezerFetcher():
     def fetch(user_id):
@@ -52,11 +54,16 @@ class DeezerFetcher():
 
             # save or update releases
             for release in releases:
+                try:
+                    release_date = parse(release["release_date"])
+                except ValueError:
+                    release_date = str(datetime.date.today())
+
                 find_by = {"artist": artist, "integration_release_id": release["id"]}
                 update = {
                     "title": release["title"],
                     "cover_url": release["cover"],
-                    "date": release["release_date"],
+                    "date": release_date,
                     "release_type": release["type"],
                     "integration_url": release["link"],
                 }
