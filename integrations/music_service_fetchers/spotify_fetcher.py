@@ -61,7 +61,10 @@ class SpotifyFetcher():
 
             while not all_releases_loaded:
                 response = requests.get(url).json()
-                current_request_releases = response['items']
+                try:
+                    current_request_releases = response['items']
+                except KeyError:
+                    raise Exception(f'KeyError "items" (url: {url}, artist: {artist.name}, response: {response})')
                 releases += current_request_releases
                 if response['next']:
                     url = response['next'] + f"&access_token={token}"
