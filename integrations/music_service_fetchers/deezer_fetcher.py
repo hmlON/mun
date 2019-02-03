@@ -4,6 +4,7 @@ from integrations.models import Artist, Release
 import requests
 import datetime
 from dateutil.parser import parse
+import time
 
 class DeezerFetcher():
     def fetch(user_id):
@@ -51,6 +52,7 @@ class DeezerFetcher():
                     url = response['next']
                 else:
                     all_releases_loaded = True
+                time.sleep(0.1)
 
             # save or update releases
             for release in releases:

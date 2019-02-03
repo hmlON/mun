@@ -67,7 +67,7 @@ class SpotifyFetcher():
                     url = response['next'] + f"&access_token={token}"
                 else:
                     all_releases_loaded = True
-                time.sleep(1)
+                time.sleep(0.1)
 
             # save or update releases
             for release in releases:
