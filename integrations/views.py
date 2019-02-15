@@ -9,7 +9,7 @@ def index(request):
     user_id = request.user.id
 
     integration = request.user.integration_set.last()
-    releases = Release.objects.filter(artist__integration_id=integration.id).order_by('-date', '-created_at')[:200]
+    releases = Release.objects.filter(artist__integration_id=integration.id).order_by('-date', '-created_at')[:1000]
     context = {'user': request.user, 'releases': releases}
     return render(request, 'releases/index.html', context)
 
