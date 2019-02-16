@@ -10,7 +10,7 @@
     <header class="header">
         {% if user.is_authenticated %}
             <a href="/settings" class="header-link">Settings</a>
-            <a href="/releases" class="header-link">Latest releases</a>
+            <a href="/latest" class="header-link">Latest releases</a>
             <a href="{% url 'logout' %}" class="header-link">Log out</a>
         {% else %}
             <div class="header-text">Sign in via:</div>

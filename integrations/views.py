@@ -5,13 +5,36 @@ from integrations.models import Release
 from notifications.forms import EmailNotificationForm, TelegramNotificationForm
 
 @login_required
-def index(request):
+def latest(request):
     user_id = request.user.id
 
     integration = request.user.integration_set.last()
-    releases = Release.objects.filter(artist__integration_id=integration.id).order_by('-date', '-created_at')[:1000]
+    releases = Release.objects.filter(artist__integration_id=integration.id).order_by('-date', '-created_at')[:100]
+
+    context = {'user': request.user, 'releases': releases}
+    return render(request, 'releases/latest.html', context)
+
+@login_required
+def releases(request):
+    user_id = request.user.id
+    after = int(request.GET.get('after') or 0)
+    count = int(request.GET.get('count') or 100)
+    to = after + count
+
+    integration = request.user.integration_set.last()
+    releases = Release.objects.filter(artist__integration_id=integration.id).order_by('-date', '-created_at')[after:to]
+
     context = {'user': request.user, 'releases': releases}
     return render(request, 'releases/index.html', context)
+
+@login_required
+def artist(request, name):
+    integration = request.user.integration_set.last()
+    artist = integration.artist_set.get(name__iexact=name)
+    releases = artist.release_set.all().order_by('-date', '-created_at')
+
+    context = {'artist': artist, 'releases': releases}
+    return render(request, 'artists/show.html', context)
 
 @login_required
 def settings(request):
@@ -43,15 +66,6 @@ def settings(request):
         'telegram_notification_form': telegram_notification_form,
     }
     return render(request, 'settings/index.html', context)
-
-@login_required
-def artist(request, name):
-    integration = request.user.integration_set.last()
-    artist = integration.artist_set.get(name__iexact=name)
-    releases = artist.release_set.all().order_by('-date', '-created_at')
-
-    context = {'artist': artist, 'releases': releases}
-    return render(request, 'artists/show.html', context)
 
 @staff_member_required
 def admin_dashboard(request):

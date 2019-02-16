@@ -9,14 +9,6 @@
 {% block content %}
 	<h1 class="page-title">{{ artist.name }}'s releases</h1>
 	<main class="releases">
-		{% for release in releases %}
-			<article class="release">
-				<span class="release-date">{{ release.date }}</span>
-				<img src="{{ release.cover_url }}" alt="{{ release.title }} cover" class="release-cover">
-				<span class="release-title">
-					{{ release.artist.name }} - {{ release.title }}
-				</span>
-			</article>
-		{% endfor %}
+		{% include "releases/index.html" with releases=releases no_releases_text="Releases will be here soon..." %}
 	</main>
 {% endblock %}

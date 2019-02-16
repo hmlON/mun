@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+    <title>Latest releases | MuN</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'releases/style.css' %}">
+{% endblock %}
+
+{% block content %}
+    <h1 class="page-title">Latest releases</h1>
+    <main class="releases">
+        {% include "releases/index.html" with releases=releases no_releases_text="New releases will be here soon..." %}
+    </main>
+
+    <script>
+        window.onscroll = function() {
+            var pageHeight = document.documentElement.offsetHeight,
+                windowHeight = window.innerHeight,
+                scrollPosition = window.scrollY || window.pageYOffset || document.body.scrollTop + (document.documentElement && document.documentElement.scrollTop || 0)
+
+            if (pageHeight <= windowHeight + scrollPosition) {
+                releases = document.getElementsByClassName('release')
+                latest = releases[releases.length - 1]
+
+                fetch_next = 100
+                fetch(`/releases?after=${releases.length}&count=${fetch_next}`)
+                    .then(function(response) {
+                        return response.text()
+                    })
+                    .then(function(loaded_releases) {
+                        latest.insertAdjacentHTML('afterend', loaded_releases)
+                    })
+            }
+        }
+    </script>
+{% endblock %}
