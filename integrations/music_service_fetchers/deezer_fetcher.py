@@ -22,19 +22,21 @@ class DeezerFetcher():
 
 
     def fetch_artists(self):
-        artists = []
-        all_artists_loaded = False
-        url = f"https://api.deezer.com/user/{self.integration_user_id}/artists"
+        data = []
+        all_data_loaded = False
+        integration_user_id = self.integration.integration_user_id
+        url = f"https://api.deezer.com/user/{integration_user_id}/artists"
 
-        while not all_artists_loaded:
+        while not all_data_loaded:
             response = requests.get(url).json()
-            artists += response['data']
+            data += response['data']
             if response.get('next'):
                 url = response['next']
             else:
-                all_artists_loaded = True
+                all_data_loaded = True
+            time.sleep(0.1)
 
-        return artists
+        return data
 
 
     def upsert_artists(self, artists):
@@ -50,21 +52,21 @@ class DeezerFetcher():
 
 
     def fetch_artist_releases(self, artist):
-        releases = []
-        all_releases_loaded = False
-        artist_id = artist.integration_artist_id
-        url = f"https://api.deezer.com/artist/{artist_id}/albums"
+        data = []
+        all_data_loaded = False
+        integration_artist_id = artist.integration_artist_id
+        url = f"https://api.deezer.com/artist/{integration_artist_id}/albums"
 
-        while not all_releases_loaded:
+        while not all_data_loaded:
             response = requests.get(url).json()
-            releases += response['data']
+            data += response['data']
             if response.get('next'):
                 url = response['next']
             else:
-                all_releases_loaded = True
+                all_data_loaded = True
             time.sleep(0.1)
 
-        return(releases)
+        return(data)
 
 
     def upsert_artist_releases(self, artist, releases):
