@@ -10,7 +10,6 @@ class DeezerFetcher():
     def __init__(self, user_id):
         user = User.objects.get(pk=user_id)
         self.integration = user.integration_set.get(identifier='deezer')
-        self.integration_user_id = self.integration.integration_user_id
 
     def fetch(self):
         artists_data = self.fetch_artists()

@@ -8,27 +8,26 @@ import time
 from dateutil.parser import parse
 
 class SpotifyFetcher():
-    def fetch(user_id):
+    def __init__(self, user_id):
         user = User.objects.get(pk=user_id)
+        self.integration = user.integration_set.get(identifier='spotify')
 
-        # get integration
-        integration = user.integration_set.get(identifier='spotify')
-
+    def fetch(self):
         # refresh token
         client_id = os.environ.get('SPOTIFY_KEY', '')
         client_secret = os.environ.get('SPOTIFY_SECRET', '')
         sp_oauth = SpotifyOAuth(client_id, client_secret, None)
-        token_info = sp_oauth.refresh_access_token(integration.refresh_token)
+        token_info = sp_oauth.refresh_access_token(self.integration.refresh_token)
 
-        integration.access_token = token_info['access_token']
-        integration.refresh_token = token_info['refresh_token']
-        integration.save()
+        self.integration.access_token = token_info['access_token']
+        self.integration.refresh_token = token_info['refresh_token']
+        self.integration.save()
 
         # load all artists
         artists = []
         all_artists_loaded = False
         limit = 50
-        token = integration.access_token
+        token = self.integration.access_token
         url = f"https://api.spotify.com/v1/me/following?type=artist&limit={limit}&access_token={token}"
 
         while not all_artists_loaded:
@@ -42,14 +41,14 @@ class SpotifyFetcher():
 
         # save or update loaded artists
         for artist in artists:
-            find_by = {"integration": integration, "integration_artist_id": artist["id"]}
+            find_by = {"integration": self.integration, "integration_artist_id": artist["id"]}
             update = {"name": artist["name"]}
             if Artist.objects.filter(**find_by).exists():
                 Artist.objects.filter(**find_by).update(**update)
             else:
                 Artist.objects.create(**update, **find_by)
 
-        artists = integration.artist_set.all()
+        artists = self.integration.artist_set.all()
 
         for artist in artists:
             # load releases
