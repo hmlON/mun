@@ -36,7 +36,7 @@ class Command(BaseCommand):
                 SpotifyFetcher.fetch(user.id)
             elif user.integration_set.filter(identifier='deezer').exists():
                 integration = user.integration_set.get(identifier='deezer')
-                DeezerFetcher.fetch(user.id)
+                DeezerFetcher(self.user.id).fetch()
 
             if not integration:
               continue

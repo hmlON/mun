@@ -37,7 +37,7 @@ class DeezerFetcherTest(TestCase):
         self.assertEqual(Release.objects.count(), 0)
         self.assertEqual(Artist.objects.count(), 0)
 
-        DeezerFetcher.fetch(self.user.id)
+        DeezerFetcher(self.user.id).fetch()
 
         self.assertNotEqual(Artist.objects.count(), 0)
         self.assertNotEqual(Release.objects.count(), 0)
