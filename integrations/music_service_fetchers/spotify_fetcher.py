@@ -13,7 +13,17 @@ class SpotifyFetcher():
         self.integration = user.integration_set.get(identifier='spotify')
 
     def fetch(self):
-        # refresh token
+        self.activate_integration()
+
+        artists_data = self.fetch_artists()
+        artists = self.update_or_create_artists(artists_data)
+
+        for artist in artists:
+            releases_data = self.fetch_artist_releases(artist)
+            self.update_or_create_artist_releases(artist, releases_data)
+
+
+    def activate_integration(self):
         client_id = os.environ.get('SPOTIFY_KEY', '')
         client_secret = os.environ.get('SPOTIFY_SECRET', '')
         sp_oauth = SpotifyOAuth(client_id, client_secret, None)
@@ -23,7 +33,8 @@ class SpotifyFetcher():
         self.integration.refresh_token = token_info['refresh_token']
         self.integration.save()
 
-        # load all artists
+
+    def fetch_artists(self):
         artists = []
         all_artists_loaded = False
         limit = 50
@@ -39,7 +50,10 @@ class SpotifyFetcher():
             else:
                 all_artists_loaded = True
 
-        # save or update loaded artists
+        return(artists)
+
+
+    def update_or_create_artists(self, artists):
         for artist in artists:
             find_by = {"integration": self.integration, "integration_artist_id": artist["id"]}
             update = {"name": artist["name"]}
@@ -48,52 +62,56 @@ class SpotifyFetcher():
             else:
                 Artist.objects.create(**update, **find_by)
 
-        artists = self.integration.artist_set.all()
+        return(self.integration.artist_set.all())
 
-        for artist in artists:
-            # load releases
-            releases = []
-            all_releases_loaded = False
-            limit = 50
-            artist_id = artist.integration_artist_id
-            url = f"https://api.spotify.com/v1/artists/{artist_id}/albums?limit={limit}&access_token={token}"
 
-            while not all_releases_loaded:
-                response = requests.get(url).json()
-                try:
-                    current_request_releases = response['items']
-                except KeyError:
-                    raise Exception(f'KeyError "items" (url: {url}, artist: {artist.name}, response: {response})')
-                releases += current_request_releases
-                if response['next']:
-                    url = response['next'] + f"&access_token={token}"
-                else:
-                    all_releases_loaded = True
-                time.sleep(0.1)
+    def fetch_artist_releases(self, artist):
+        releases = []
+        all_releases_loaded = False
+        limit = 50
+        artist_id = artist.integration_artist_id
+        token = self.integration.access_token
+        url = f"https://api.spotify.com/v1/artists/{artist_id}/albums?limit={limit}&access_token={token}"
 
-            # save or update releases
-            for release in releases:
-                find_by = {"artist": artist, "integration_release_id": release["id"]}
+        while not all_releases_loaded:
+            response = requests.get(url).json()
+            try:
+                current_request_releases = response['items']
+            except KeyError:
+                raise Exception(f'KeyError "items" (url: {url}, artist: {artist.name}, response: {response})')
+            releases += current_request_releases
+            if response['next']:
+                url = response['next'] + f"&access_token={token}"
+            else:
+                all_releases_loaded = True
+            time.sleep(0.1)
 
-                try:
-                    release_date = parse(release['release_date'])
-                except ValueError:
-                    release_date = str(datetime.date.today())
+        return(releases)
 
-                cover_url = release['images']
-                if len(cover_url) > 0:
-                    cover_url = max(release['images'], key=lambda image: image['width'])['url']
-                else:
-                    cover_url = ''
 
-                update = {
-                    "title": release["name"],
-                    "cover_url": cover_url,
-                    "date": release_date,
-                    "release_type": release["album_type"],
-                    "integration_url": release['external_urls']['spotify'],
-                }
-                if Release.objects.filter(**find_by).exists():
-                    Release.objects.filter(**find_by).update(**update)
-                else:
-                    Release.objects.create(**update, **find_by)
+    def update_or_create_artist_releases(self, artist, releases):
+        for release in releases:
+            find_by = {"artist": artist, "integration_release_id": release["id"]}
+
+            try:
+                release_date = parse(release['release_date'])
+            except ValueError:
+                release_date = str(datetime.date.today())
+
+            cover_url = release['images']
+            if len(cover_url) > 0:
+                cover_url = max(release['images'], key=lambda image: image['width'])['url']
+            else:
+                cover_url = ''
+
+            update = {
+                "title": release["name"],
+                "cover_url": cover_url,
+                "date": release_date,
+                "release_type": release["album_type"],
+                "integration_url": release['external_urls']['spotify'],
+            }
+            if Release.objects.filter(**find_by).exists():
+                Release.objects.filter(**find_by).update(**update)
+            else:
+                Release.objects.create(**update, **find_by)

@@ -58,6 +58,7 @@ class DeezerFetcher():
             }
             Release.objects.update_or_create(**find_by, defaults=update)
 
+
     def fetch_data(self, url):
         data = []
         all_data_loaded = False
