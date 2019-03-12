@@ -6,6 +6,7 @@ import os
 import requests
 import time
 from dateutil.parser import parse
+from dict_digger import dig
 
 class SpotifyFetcher():
     def __init__(self, user_id):
@@ -35,22 +36,16 @@ class SpotifyFetcher():
 
 
     def fetch_artists(self):
-        artists = []
-        all_artists_loaded = False
-        limit = 50
         token = self.integration.access_token
+        limit = 50
         url = f"https://api.spotify.com/v1/me/following?type=artist&limit={limit}&access_token={token}"
 
-        while not all_artists_loaded:
-            response = requests.get(url).json()['artists']
-            current_request_artists = response['items']
-            artists += current_request_artists
-            if response['next']:
-                url = response['next'] + f"&access_token={token}"
-            else:
-                all_artists_loaded = True
-
-        return(artists)
+        return(
+            self.fetch_data(url,
+                path_to_data=['artists', 'items'],
+                path_to_next=['artists', 'next']
+            )
+        )
 
 
     def update_or_create_artists(self, artists):
@@ -66,27 +61,17 @@ class SpotifyFetcher():
 
 
     def fetch_artist_releases(self, artist):
-        releases = []
-        all_releases_loaded = False
-        limit = 50
         artist_id = artist.integration_artist_id
         token = self.integration.access_token
+        limit = 50
         url = f"https://api.spotify.com/v1/artists/{artist_id}/albums?limit={limit}&access_token={token}"
 
-        while not all_releases_loaded:
-            response = requests.get(url).json()
-            try:
-                current_request_releases = response['items']
-            except KeyError:
-                raise Exception(f'KeyError "items" (url: {url}, artist: {artist.name}, response: {response})')
-            releases += current_request_releases
-            if response['next']:
-                url = response['next'] + f"&access_token={token}"
-            else:
-                all_releases_loaded = True
-            time.sleep(0.1)
-
-        return(releases)
+        return(
+            self.fetch_data(url,
+                path_to_data=['items'],
+                path_to_next=['next']
+            )
+        )
 
 
     def update_or_create_artist_releases(self, artist, releases):
@@ -115,3 +100,19 @@ class SpotifyFetcher():
                 Release.objects.filter(**find_by).update(**update)
             else:
                 Release.objects.create(**update, **find_by)
+
+    def fetch_data(self, url, path_to_data, path_to_next):
+        token = self.integration.access_token
+        data = []
+        all_data_loaded = False
+
+        while not all_data_loaded:
+            response = requests.get(url).json()
+            data += dig(response, *path_to_data)
+            next_url = dig(response, *path_to_next)
+            if next_url:
+                url = next_url + f"&access_token={token}"
+            else:
+                all_data_loaded = True
+
+        return(data)
