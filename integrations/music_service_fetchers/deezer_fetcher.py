@@ -14,62 +14,35 @@ class DeezerFetcher():
 
     def fetch(self):
         artists_data = self.fetch_artists()
-        artists = self.upsert_artists(artists_data)
+        artists = self.update_or_create_artists(artists_data)
 
         for artist in artists:
             releases_data = self.fetch_artist_releases(artist)
-            self.upsert_artist_releases(artist, releases_data)
+            self.update_or_create_artist_releases(artist, releases_data)
 
 
     def fetch_artists(self):
-        data = []
-        all_data_loaded = False
         integration_user_id = self.integration.integration_user_id
         url = f"https://api.deezer.com/user/{integration_user_id}/artists"
-
-        while not all_data_loaded:
-            response = requests.get(url).json()
-            data += response['data']
-            if response.get('next'):
-                url = response['next']
-            else:
-                all_data_loaded = True
-            time.sleep(0.1)
-
-        return data
+        return(self.fetch_data(url))
 
 
-    def upsert_artists(self, artists):
+    def update_or_create_artists(self, artists):
         for artist in artists:
             find_by = {"integration": self.integration, "integration_artist_id": artist["id"]}
             update = {"name": artist["name"]}
-            if Artist.objects.filter(**find_by).exists():
-                Artist.objects.filter(**find_by).update(**update)
-            else:
-                Artist.objects.create(**update, **find_by)
+            Artist.objects.update_or_create(**find_by, defaults=update)
 
         return(self.integration.artist_set.all())
 
 
     def fetch_artist_releases(self, artist):
-        data = []
-        all_data_loaded = False
         integration_artist_id = artist.integration_artist_id
         url = f"https://api.deezer.com/artist/{integration_artist_id}/albums"
-
-        while not all_data_loaded:
-            response = requests.get(url).json()
-            data += response['data']
-            if response.get('next'):
-                url = response['next']
-            else:
-                all_data_loaded = True
-            time.sleep(0.1)
-
-        return(data)
+        return(self.fetch_data(url))
 
 
-    def upsert_artist_releases(self, artist, releases):
+    def update_or_create_artist_releases(self, artist, releases):
         for release in releases:
             try:
                 release_date = parse(release["release_date"])
@@ -84,7 +57,19 @@ class DeezerFetcher():
                 "release_type": release["type"],
                 "integration_url": release["link"],
             }
-            if Release.objects.filter(**find_by).exists():
-                Release.objects.filter(**find_by).update(**update)
+            Release.objects.update_or_create(**find_by, defaults=update)
+
+    def fetch_data(self, url):
+        data = []
+        all_data_loaded = False
+
+        while not all_data_loaded:
+            response = requests.get(url).json()
+            data += response['data']
+            if response.get('next'):
+                url = response['next']
             else:
-                Release.objects.create(**update, **find_by)
+                all_data_loaded = True
+            time.sleep(0.1)
+
+        return(data)
