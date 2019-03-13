@@ -52,10 +52,7 @@ class SpotifyFetcher():
         for artist in artists:
             find_by = {"integration": self.integration, "integration_artist_id": artist["id"]}
             update = {"name": artist["name"]}
-            if Artist.objects.filter(**find_by).exists():
-                Artist.objects.filter(**find_by).update(**update)
-            else:
-                Artist.objects.create(**update, **find_by)
+            Artist.objects.update_or_create(**find_by, defaults=update)
 
         return(self.integration.artist_set.all())
 
@@ -96,10 +93,7 @@ class SpotifyFetcher():
                 "release_type": release["album_type"],
                 "integration_url": release['external_urls']['spotify'],
             }
-            if Release.objects.filter(**find_by).exists():
-                Release.objects.filter(**find_by).update(**update)
-            else:
-                Release.objects.create(**update, **find_by)
+            Release.objects.update_or_create(**find_by, defaults=update)
 
     def fetch_data(self, url, path_to_data, path_to_next):
         token = self.integration.access_token
