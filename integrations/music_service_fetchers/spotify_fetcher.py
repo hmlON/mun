@@ -98,5 +98,6 @@ class SpotifyFetcher(BaseFetcher):
                 url = next_url + f"&access_token={token}"
             else:
                 all_data_loaded = True
+            time.sleep(0.1)
 
         return(data)

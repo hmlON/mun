@@ -5,6 +5,7 @@ import requests
 import datetime
 from dateutil.parser import parse
 import time
+from dict_digger import dig
 
 class DeezerFetcher(BaseFetcher):
     def integration_identifier(self):
@@ -14,7 +15,13 @@ class DeezerFetcher(BaseFetcher):
     def fetch_artists(self):
         integration_user_id = self.integration.integration_user_id
         url = f"https://api.deezer.com/user/{integration_user_id}/artists"
-        return(self.fetch_data(url))
+
+        return(
+            self.fetch_data(url,
+                path_to_data=['data'],
+                path_to_next=['next']
+            )
+        )
 
 
     def update_or_create_artists(self, artists):
@@ -29,7 +36,13 @@ class DeezerFetcher(BaseFetcher):
     def fetch_artist_releases(self, artist):
         integration_artist_id = artist.integration_artist_id
         url = f"https://api.deezer.com/artist/{integration_artist_id}/albums"
-        return(self.fetch_data(url))
+
+        return(
+            self.fetch_data(url,
+                path_to_data=['data'],
+                path_to_next=['next']
+            )
+        )
 
 
     def update_or_create_artist_releases(self, artist, releases):
@@ -50,15 +63,16 @@ class DeezerFetcher(BaseFetcher):
             Release.objects.update_or_create(**find_by, defaults=update)
 
 
-    def fetch_data(self, url):
+    def fetch_data(self, url, path_to_data, path_to_next):
         data = []
         all_data_loaded = False
 
         while not all_data_loaded:
             response = requests.get(url).json()
-            data += response['data']
-            if response.get('next'):
-                url = response['next']
+            data += dig(response, *path_to_data)
+            next_url = dig(response, *path_to_next)
+            if next_url:
+                url = next_url
             else:
                 all_data_loaded = True
             time.sleep(0.1)
