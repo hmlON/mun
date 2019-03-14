@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from .base_fetcher import BaseFetcher
 from django.shortcuts import render
 from integrations.models import Artist, Release
 import requests
@@ -6,10 +6,9 @@ import datetime
 from dateutil.parser import parse
 import time
 
-class DeezerFetcher():
-    def __init__(self, user_id):
-        user = User.objects.get(pk=user_id)
-        self.integration = user.integration_set.get(identifier='deezer')
+class DeezerFetcher(BaseFetcher):
+    def integration_identifier(self):
+        return('deezer')
 
     def fetch(self):
         artists_data = self.fetch_artists()

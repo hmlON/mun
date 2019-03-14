@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from .base_fetcher import BaseFetcher
 from integrations.models import Artist, Release
 from spotipy.oauth2 import SpotifyOAuth
 import datetime
@@ -8,10 +8,9 @@ import time
 from dateutil.parser import parse
 from dict_digger import dig
 
-class SpotifyFetcher():
-    def __init__(self, user_id):
-        user = User.objects.get(pk=user_id)
-        self.integration = user.integration_set.get(identifier='spotify')
+class SpotifyFetcher(BaseFetcher):
+    def integration_identifier(self):
+        return('spotify')
 
     def fetch(self):
         self.activate_integration()
