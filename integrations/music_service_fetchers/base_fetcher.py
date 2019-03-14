@@ -1,5 +1,8 @@
 import abc
 from django.contrib.auth.models import User
+import requests
+from dict_digger import dig
+import time
 
 class BaseFetcher():
     def __init__(self, user_id):
@@ -38,3 +41,23 @@ class BaseFetcher():
     @abc.abstractmethod
     def update_or_create_artist_releases(self):
         return()
+
+    def fetch_data(self, url, path_to_data, path_to_next):
+        token = self.integration.access_token
+        data = []
+        all_data_loaded = False
+
+        while not all_data_loaded:
+            response = requests.get(url).json()
+            data += dig(response, *path_to_data)
+            next_url = dig(response, *path_to_next)
+            if next_url:
+                if token:
+                    url = next_url + f"&access_token={token}"
+                else:
+                    url = next_url
+            else:
+                all_data_loaded = True
+            time.sleep(0.1)
+
+        return(data)
