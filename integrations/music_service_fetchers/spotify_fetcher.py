@@ -95,7 +95,10 @@ class SpotifyFetcher(BaseFetcher):
             data += dig(response, *path_to_data)
             next_url = dig(response, *path_to_next)
             if next_url:
-                url = next_url + f"&access_token={token}"
+                if token:
+                    url = next_url + f"&access_token={token}"
+                else:
+                    url = next_url
             else:
                 all_data_loaded = True
             time.sleep(0.1)
