@@ -10,14 +10,6 @@ class DeezerFetcher(BaseFetcher):
     def integration_identifier(self):
         return('deezer')
 
-    def fetch(self):
-        artists_data = self.fetch_artists()
-        artists = self.update_or_create_artists(artists_data)
-
-        for artist in artists:
-            releases_data = self.fetch_artist_releases(artist)
-            self.update_or_create_artist_releases(artist, releases_data)
-
 
     def fetch_artists(self):
         integration_user_id = self.integration.integration_user_id

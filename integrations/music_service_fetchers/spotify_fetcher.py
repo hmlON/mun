@@ -12,16 +12,6 @@ class SpotifyFetcher(BaseFetcher):
     def integration_identifier(self):
         return('spotify')
 
-    def fetch(self):
-        self.activate_integration()
-
-        artists_data = self.fetch_artists()
-        artists = self.update_or_create_artists(artists_data)
-
-        for artist in artists:
-            releases_data = self.fetch_artist_releases(artist)
-            self.update_or_create_artist_releases(artist, releases_data)
-
 
     def activate_integration(self):
         client_id = os.environ.get('SPOTIFY_KEY', '')
@@ -93,6 +83,7 @@ class SpotifyFetcher(BaseFetcher):
                 "integration_url": release['external_urls']['spotify'],
             }
             Release.objects.update_or_create(**find_by, defaults=update)
+
 
     def fetch_data(self, url, path_to_data, path_to_next):
         token = self.integration.access_token
