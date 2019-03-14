@@ -19,7 +19,7 @@ class SpotifyFetcherTest(TestCase):
         self.assertEqual(Release.objects.count(), 0)
         self.assertEqual(Artist.objects.count(), 0)
 
-        SpotifyFetcher.fetch(self.user.id)
+        SpotifyFetcher(self.user.id).fetch()
 
         self.assertNotEqual(Artist.objects.count(), 0)
         self.assertNotEqual(Release.objects.count(), 0)
