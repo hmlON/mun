@@ -66,11 +66,13 @@ class Command(BaseCommand):
                     text_content = '\n'.join([intro_text] + releases_text + ['\n', '--', outro_text])
                     html_content = '<br>'.join([intro_text] + releases_html + ['\n', '--', outro_text])
 
+                    to = notification.channel_id or user.email
+
                     send_mail(
                         f'New music releases since {new_since}',
                         text_content,
                         '"MuN: latest releases" <latest.releases@musicnotifier.com>',
-                        [user.email],
+                        [to],
                         html_message=html_content,
                         fail_silently=False,
                     )
