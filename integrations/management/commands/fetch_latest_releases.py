@@ -62,8 +62,9 @@ class Command(BaseCommand):
                     releases_text = [f'{release.date}: {release.artist.name} - {release.title}' for release in new_releases]
                     releases_html = [f'{release.date}: {release.artist.name} - <a href="{release.integration_url}">{release.title}</a>' for release in new_releases]
                     intro_text = 'Here are latest music releases that you have not seen before:'
-                    text_content = '\n'.join([intro_text] + releases_text)
-                    html_content = '<br>'.join([intro_text] + releases_html)
+                    outro_text = 'If you’d like to stop receiving these notifications, please visit the settings page.'
+                    text_content = '\n'.join([intro_text] + releases_text + ['\n', '--', outro_text])
+                    html_content = '<br>'.join([intro_text] + releases_html + ['\n', '--', outro_text])
 
                     send_mail(
                         f'New music releases since {new_since}',
