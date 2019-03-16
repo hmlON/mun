@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 import requests
 from dict_digger import dig
 import time
+from retryable import retry
 
 class BaseFetcher():
     def __init__(self, user_id):
@@ -42,6 +43,7 @@ class BaseFetcher():
     def update_or_create_artist_releases(self):
         return()
 
+    @retry()
     def fetch_data(self, url, path_to_data, path_to_next):
         token = self.integration.access_token
         data = []
