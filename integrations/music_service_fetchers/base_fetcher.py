@@ -51,10 +51,10 @@ class BaseFetcher():
 
         while not all_data_loaded:
             response = requests.get(url).json()
-            if response:
+            try:
                 data += dig(response, *path_to_data)
-            else:
-                return data
+            except:
+                return(data)
 
             next_url = dig(response, *path_to_next)
             if next_url:
