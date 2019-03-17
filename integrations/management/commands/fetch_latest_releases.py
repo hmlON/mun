@@ -69,7 +69,7 @@ class Command(BaseCommand):
                     to = notification.channel_id or user.email
 
                     send_mail(
-                        f'New music releases since {new_since}',
+                        f'New music releases since {new_since.date()}',
                         text_content,
                         '"MuN: latest releases" <latest.releases@musicnotifier.com>',
                         [to],
