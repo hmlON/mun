@@ -32,6 +32,7 @@ class Release(models.Model):
     integration_url = models.CharField(max_length=256, null=True)
     date = models.DateField()
     release_type = models.CharField(max_length=256)
+    explicit = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

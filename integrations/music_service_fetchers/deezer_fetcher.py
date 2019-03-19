@@ -56,5 +56,6 @@ class DeezerFetcher(BaseFetcher):
                 "date": release_date,
                 "release_type": release["type"],
                 "integration_url": release["link"],
+                "explicit": release["explicit_lyrics"],
             }
             Release.objects.update_or_create(**find_by, defaults=update)

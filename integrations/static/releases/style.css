@@ -41,6 +41,16 @@ body {
   padding-right: 0.5rem;
 }
 
+.release-explicit {
+  border: 1px solid #777;
+  border-radius: 0.1rem;
+  color: #777;
+  font-size: 0.8rem;
+  padding: 0.1rem;
+  text-transform: uppercase;
+  margin-right: 0.5rem;
+}
+
 .release-artist-link {
   color: #ddd;
 }
