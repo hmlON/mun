@@ -5,7 +5,7 @@ chardet==3.0.4
 cycler==0.10.0
 defusedxml==0.5.0
 dict-digger==0.2.1
-Django==2.1.7
+Django==2.2.10
 django-ses==0.8.9
 future==0.17.1
 idna==2.8
