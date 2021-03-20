@@ -9,7 +9,7 @@ Django==2.1.7
 django-ses==0.8.9
 future==0.17.1
 idna==2.8
-Jinja2==2.10
+Jinja2==2.11.3
 kiwisolver==1.0.1
 MarkupSafe==1.1.0
 matplotlib==3.0.2
